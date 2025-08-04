@@ -1,2 +1,15 @@
 Nodo JS es un entorno de ejecucion de javascript, un lugar donde se podra ejecutar JS sin ser un navegador, como los navegadores han ido optimizando
-en lenguaje para que lo interpretan mas rapido, node js corre sobre el mismo motod que utiliza chrome.
+en lenguaje para que lo interpretan mas rapido, node js corre sobre el mismo motor que utiliza chrome que es V8 . Por esto es mutlipaltaforma y codigo abierto.
+
+Es asincrono tiene una rquitectura orientada a eventos. 
+
+Tiene un bucle en el que va ejecutando tareas mientras espera respuestas de otras tareas que ha dejado. Es monohilo pero se aprovecha de la sincronia para parecer que no.
+
+
+Ryan Dahl creo node dado a que se miro con limitaciones a la hora deejecutar apache hhtp server que no podia manejar muchas conexiones de manera concurrente.
+
+
+REPL - Read Eval Print Loop es escribir algo, lo lee, evalua y lo imprime constantemente. Esto sale cuando entramos a node.
+
+window no existe porque no hay na ventana, hay una variable globla que agrgeo javascrit para todos llamada que es globalThis, tanto pra el front que en lo navegadores loq ue hace es solmanete
+apuntar a window y node js apunta a una llamda global
