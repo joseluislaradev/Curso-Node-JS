@@ -1,0 +1,2 @@
+Nodo JS es un entorno de ejecucion de javascript, un lugar donde se podra ejecutar JS sin ser un navegador, como los navegadores han ido optimizando
+en lenguaje para que lo interpretan mas rapido, node js corre sobre el mismo motod que utiliza chrome.
