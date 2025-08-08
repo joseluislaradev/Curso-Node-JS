@@ -1,4 +1,3 @@
-
 //REST es una arquitectura de software, la mayoria de arquitecturas repsonde a crear en base a principios para simplificar y crear algo sostenible en el tiempo.
 //LOs principios de REST son:
 //EScalabilidad: que pueda crecer y adaptarse a nuevas necesidades.
@@ -36,17 +35,49 @@ app.get("/", (req, res) => {
   res.send("<h1>Hola Mundo</h1>");
 });
 
+//Hya un middleware par aoslucionar lso probelmas de corrs pero lo que hace es permitir todo y no es seguro ni util simepre
+//app.use(cors()); //Esto permite que cualquier origen pueda acceder a la API, se intala con npm install cors -E
+
+//metodos normlaes: get/head/psot
+//metodos especiales: put/patch/delete
+//Los metodos especiales son los que se usan para modificar recursos, los normales son para leer
+//los especiales tiene otro probelma espcaial tambien llamado CORS-PREFLIGHT, que es una peticion previa que se hace para verificar si el servidor permite el acceso al recurso solicitado desde otro origen (dominio, puerto, etc.).
+//Esto se hace para evitar ataques de tipo CSRF (Cross-Site Request Forgery) y XSS (Cross-Site Scripting), que son ataques que intentan robar información o ejecutar código malicioso en el navegador del usuario.
+//Pero estos requieren usan un metodo especial llamado OPTIONS antes de hacer los otros donde pregunta por si tiene permiso el origen
+
+const ACCEPT_ORIGINS = ["http://localhost:8080", "http://localhost:3000"];
+
 //El principio rest dice que cada recurso tiene un url unica en este caso peliculas, siempre que queraos est erecursos debe comenzar con /peliculas
 app.get("/peliculas", (req, res) => {
-  const { genre } = req.query;
+  /* ERROR CORS (Cross-Origin Resource Sharing) sucede solo en los navegadores que van a otro dominio que no es el suyo a por un recurso
+  esto es porque no se tiene la cabecera de respuesta que indica el origen de la petición si tiene acceso, el navegador pregunta al servidor que si puede acceder
+  el servidor no le dice nada y el navegador bloquea la petición */
+  if (ACCEPT_ORIGINS.includes(req.headers.origin) || !req.headers.origin) {
+    //Si no tiene origin es porque lo hace algo que no es navegador o porque viene desde el mismo origen y ahi no lo manda al pedirlo asimismo
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+  }
+  //res.header("Access-Control-Allow-Origin", "*"); //Esto permite que cualquier origen pueda acceder a la API, en produccion deberia ser mas restrictivo. podemo poner * o directmente la direccion
+
+  let { genre, page } = req.query;
+  peliculasLimitadas = peliculas.slice(0, 5); //Limitar a 5 resultados por defecto para no saturar el servidor
+  console.log("Pagina: ", page);
+
+  page ? page : (page = 1);
+  console.log("Pagina: ", page);
+
+  const pagina = parseInt(page);
+  const inicio = (pagina - 1) * 5;
+  const fin = inicio + 5;
+  peliculasLimitadas = peliculas.slice(inicio, fin);
+
   if (genre) {
-    const peliculasFiltradas = peliculas.filter((p) =>
+    const peliculasFiltradas = peliculasLimitadas.filter((p) =>
       p.genre.some((g) => g.toLowerCase() === genre.toLowerCase())
     );
     return res.json(peliculasFiltradas);
   }
   //Para lo de representar se puede leer como venia y mandarlo con ese formato, aunque eso ya es muy raro
-  return res.json(peliculas);
+  return res.json(peliculasLimitadas);
 });
 
 app.get("/peliculas/:id", (req, res) => {
@@ -76,7 +107,6 @@ app.post("/peliculas", (req, res) => {
   res.status(201).json(nuevaPelicula); //201 es el codigo de creado, se suele responder con el recurso creado para actualizar cache del cliente en la misma peticion puesto que ya llega con id.
 });
 
-
 app.patch("/peliculas/:id", (req, res) => {
   const { id } = req.params;
   const result = validarParcialPelicula(req.body);
@@ -95,6 +125,35 @@ app.patch("/peliculas/:id", (req, res) => {
   };
   peliculas[peliculaIndex] = peliculaActualizada;
   res.json(peliculaActualizada);
+});
+
+app.delete("/peliculas/:id", (req, res) => {
+  if (ACCEPT_ORIGINS.includes(req.headers.origin) || !req.headers.origin) {
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+  }
+  const { id } = req.params;
+  const peliculaIndex = peliculas.findIndex((p) => p.id === id);
+  if (peliculaIndex === -1) {
+    return res.status(404).send("Pelicula no encontrada");
+  }
+  peliculas.splice(peliculaIndex, 1);
+  res.status(204).send();
+});
+
+//El metodo OPTIONS se usa para verificar si el servidor permite el acceso al recurso solicitado desde otro origen (dominio, puerto, etc.).
+app.options("/peliculas/:id", (req, res) => {
+  if (ACCEPT_ORIGINS.includes(req.headers.origin) || !req.headers.origin) {
+    //Encabezados para permitir el acceso desde el origen especificado
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    //Encabezados para permitir los metodos y encabezados que se pueden usar en la peticion
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    );
+    //Encabezados para permitir los encabezados que se pueden usar en la peticion
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  }
+  res.status(204).send(); //204 No Content, no hay contenido que devolver
 });
 
 app.use((req, res) => {
