@@ -17,9 +17,18 @@ Content-Type: application/json
 {
   "title": "Inception",
   "year": 2010,
-  "genre": ["Science Fiction"],
   "director": "Christopher Nolan",
-  "rate": 8.8,
+  "rate": 5,
   "poster": "https://example.com/inception.jpg",
-  "duration": 148
+  "duration": 148,
+  "genre": ["Science Fiction"]
+} 
+
+
+###Actualizar una pelicula
+PATCH http://localhost:3000/peliculas/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+Content-Type: application/json
+
+{
+  "year": 1889
 }

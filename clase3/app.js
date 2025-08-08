@@ -1,3 +1,4 @@
+
 //REST es una arquitectura de software, la mayoria de arquitecturas repsonde a crear en base a principios para simplificar y crear algo sostenible en el tiempo.
 //LOs principios de REST son:
 //EScalabilidad: que pueda crecer y adaptarse a nuevas necesidades.
@@ -20,7 +21,7 @@
 
 const express = require("express");
 const crypto = require("crypto");
-const { validarPelicula } = require("./schemas/movies"); //Importamos la funcion de validacion de peliculas
+const { validarPelicula, validarParcialPelicula } = require("./schemas/movies"); //Importamos la funcion de validacion de peliculas
 
 const peliculas = require("./movies.json");
 
@@ -62,7 +63,7 @@ app.get("/peliculas/:id", (req, res) => {
 app.post("/peliculas", (req, res) => {
   const resultado = validarPelicula(req.body);
   if (resultado.error) {
-    return res.status(422).json(resultado.error);
+    return res.status(422).json(JSON.parse(resultado.error));
   }
 
   const nuevaPelicula = {
@@ -73,6 +74,27 @@ app.post("/peliculas", (req, res) => {
   //Esto no es rest porque guardamos el estado de la app en memoria, por ahora en lo que hacemos una BD
   peliculas.push(nuevaPelicula);
   res.status(201).json(nuevaPelicula); //201 es el codigo de creado, se suele responder con el recurso creado para actualizar cache del cliente en la misma peticion puesto que ya llega con id.
+});
+
+
+app.patch("/peliculas/:id", (req, res) => {
+  const { id } = req.params;
+  const result = validarParcialPelicula(req.body);
+  if (result.error) {
+    return res.status(422).json(JSON.parse(result.error));
+  }
+
+  const peliculaIndex = peliculas.findIndex((p) => p.id === id);
+  if (peliculaIndex === -1) {
+    return res.status(404).send("Pelicula no encontrada");
+  }
+
+  const peliculaActualizada = {
+    ...peliculas[peliculaIndex],
+    ...result.data,
+  };
+  peliculas[peliculaIndex] = peliculaActualizada;
+  res.json(peliculaActualizada);
 });
 
 app.use((req, res) => {

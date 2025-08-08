@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module">
+        fetch("http://localhost:3000/peliculas")
+            .then(response => response.json())
+            .then(movies => {
+                const html = movies.map(movie => `
+                    <div data-id="${movie.id}">
+                        <h2>${movie.title}</h2>
+                        <p>Year: ${movie.year}</p>
+                        <p>Director: ${movie.director}</p>
+                        <p>Rate: ${movie.rate}</p>
+                        <img src="${movie.poster}" alt="${movie.title} poster">
+                        <p>Duration: ${movie.duration} minutes</p>
+                    </div>
+                `).join('');
+                document.body.innerHTML = html;
+            })
+            .catch(error => console.error('Error:', error))
+    </script>
+</head>
+<body>
+    <h1>Hola mundo web </h1>
+</body>
+</html>
