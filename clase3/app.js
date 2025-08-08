@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 //Hya un middleware par aoslucionar lso probelmas de corrs pero lo que hace es permitir todo y no es seguro ni util simepre
 //app.use(cors()); //Esto permite que cualquier origen pueda acceder a la API, se intala con npm install cors -E
 
-//metodos normlaes: get/head/psot
+//metodos normlaes: get/head/post
 //metodos especiales: put/patch/delete
 //Los metodos especiales son los que se usan para modificar recursos, los normales son para leer
 //los especiales tiene otro probelma espcaial tambien llamado CORS-PREFLIGHT, que es una peticion previa que se hace para verificar si el servidor permite el acceso al recurso solicitado desde otro origen (dominio, puerto, etc.).
