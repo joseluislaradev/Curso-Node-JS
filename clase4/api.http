@@ -32,3 +32,16 @@ Content-Type: application/json
 {
   "year": 1890
 }
+
+
+###Delete una pelicula
+DELETE http://localhost:3000/peliculas/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+
+
+
+
+
+
+
+
+

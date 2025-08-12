@@ -1,5 +1,5 @@
 import { validarPelicula, validarParcialPelicula } from "../schemas/movies.js"; //Importamos la funcion de validacion de peliculas
-import { PeliculaModel } from "../models/pelicula.js";
+import { PeliculaModel } from "../models/local-file-system/pelicula.js";
 
 const ACCEPT_ORIGINS = ["http://localhost:8080", "http://localhost:3000"];
 

@@ -1,4 +1,4 @@
-import peliculas from "../movies.json" assert { type: "json" };
+import peliculas from "../../movies.json" assert { type: "json" };
 import { randomUUID } from "crypto";
 
 export class PeliculaModel {
