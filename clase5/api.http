@@ -1,0 +1,47 @@
+###Recupera todas las peliculas
+GET http://localhost:3000/peliculas
+
+
+###Recupera una pelicula por id
+GET http://localhost:3000/peliculas/20c2012c-77c9-11f0-9c86-d8448938ff93
+
+
+###Recupera una pelicula por genero
+GET http://localhost:3000/peliculas?genre=Action
+
+
+###Crea una pelicula
+POST http://localhost:3000/peliculas
+Content-Type: application/json
+
+{
+  "title": "Inception",
+  "year": 2010,
+  "director": "Christopher Nolan",
+  "rate": 5,
+  "poster": "https://example.com/inception.jpg",
+  "duration": 148,
+  "genre": ["Science Fiction"]
+} 
+
+
+###Actualizar una pelicula
+PATCH http://localhost:3000/peliculas/20c2012c-77c9-11f0-9c86-d8448938ff93
+Content-Type: application/json
+
+{
+  "year": 1900
+}
+
+
+###Delete una pelicula
+DELETE http://localhost:3000/peliculas/8eec2179-7863-11f0-ab27-d8448938ff93
+
+
+
+
+
+
+
+
+
