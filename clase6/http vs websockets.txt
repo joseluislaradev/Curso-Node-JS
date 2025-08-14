@@ -1,0 +1,16 @@
+Tanto hthp como web sockets tienen la siguiente definciion: 
+
+    Protocolo de comunicacion qeu se basa en el intercambio de infomacion entre un cliente y un servidor. Usan TCP como protocolo de transporte.
+
+La diferencia es que http es stateless(sin estado) y esto lo hace cacheable signifcia que se puede almacenar en cache y reutilizar en futuras peticiones, 
+mejorando la eficiencia y reduciendo la carga en el servidor. Como para recursos, imagenes, js, html, etc.
+Por otro lado, los web sockets son stateful(Con estado) lo que lo ahce no cacheable, permiten una comunicación bidireccional en tiempo real, lo que los hace
+ideales para aplicaciones que requieren actualizaciones constantes, como chats o notificaciones en vivo.
+
+Http usa una tecnica para recurar datos llamada polling que es ir a preguntar al servidort si hay nuevos mensaje scada cierto tiempo, pero en realidad no es
+tan util porque genera una carga innecesaria en el servidor y puede introducir latencia en la entrega de mensajes, porque al fin y al cabo sigue siendo unidireccional abriendo y cerrando conexiones.
+
+websockets puede hacer tiempo real porque es bidireccional, primero abre una comunicacion http para avisarle que quiere hacer una comunicacion web sockets al servidor y ya despues de
+esto el servidor le puede responder cuando quiera, se mantiene abierta un canal para comunicarse.
+
+

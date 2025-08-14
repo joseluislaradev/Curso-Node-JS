@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jose Luis Chat</title>
+    <link rel="stylesheet" href="index.css" />
+    <style>
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60%;
+        height: auto;
+        margin: auto;
+        padding: 20px;
+        background-color: rgb(38, 210, 216);
+      }
+
+      .chat-container {
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .container h1 {
+        text-align: center;
+        color: black;
+      }
+
+      .mensajes {
+        width: 100%;
+        height: auto;
+        min-height: 30px;
+        background-color: white;
+        background-image: url("fondo-mensajes.jpg");
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+      }
+
+      .mensajeEnviado,
+      .mensajeRecibido {
+        width: auto;
+        max-width: 50%;
+        display: flex;
+        padding: 10px;
+      }
+
+      .mensajeEnviado {
+        background-color: #008d23;
+        color: white;
+        border-radius: 10px 10px 0 10px;
+        margin-left: auto;
+        justify-content: flex-end;
+      }
+
+      .mensajeRecibido {
+        background-color: #f1f1f1;
+        color: black;
+        border-radius: 10px 10px 10px 0;
+        justify-content: flex-start;
+      }
+
+      .chat {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .chat input {
+        width: 80%;
+        height: 30px;
+        border-radius: 5px;
+        border: none;
+        padding-left: 10px;
+      }
+      .chat input:focus {
+        outline: none;
+      }
+
+      .chat button {
+        width: 20%;
+        height: 30px;
+        border-radius: 5px;
+        border: none;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+      .chat button:hover {
+        background-color: #0056b3;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          width: 100%;
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="chat-container">
+        <h1>Bienvenido a Jose Luis Chat</h1>
+        <div class="mensajes" id="mensajes">
+          <!-- Aquí se mostrarán los mensajes -->
+        </div>
+        <div class="chat">
+          <input type="text" id="message" placeholder="Escribe un mensaje..." />
+          <button id="send">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
