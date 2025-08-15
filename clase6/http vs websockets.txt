@@ -14,3 +14,6 @@ websockets puede hacer tiempo real porque es bidireccional, primero abre una com
 esto el servidor le puede responder cuando quiera, se mantiene abierta un canal para comunicarse.
 
 
+Hay dos paquetes de npm para usar websockets una es "ws" muy popular y concoida y "socket.io" menos conocida pero mas sencilla y sirve en muchos lenguajes.
+
+

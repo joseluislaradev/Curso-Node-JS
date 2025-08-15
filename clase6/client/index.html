@@ -34,7 +34,6 @@
         height: auto;
         min-height: 30px;
         background-color: white;
-        background-image: url("fondo-mensajes.jpg");
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -47,6 +46,13 @@
         max-width: 50%;
         display: flex;
         padding: 10px;
+      }
+
+      .contenedorMensaje > .mensajeEnviado {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
       }
 
       .mensajeEnviado {
@@ -67,6 +73,7 @@
       .chat {
         display: flex;
         justify-content: space-between;
+        margin-top: 20px;
       }
 
       .chat input {
@@ -93,6 +100,17 @@
         background-color: #0056b3;
       }
 
+      .username {
+        font-size: small;
+        margin: 2px 0;
+      }
+
+      /*Si es hermano de .mensajeEnviado */
+      .mensajeEnviado ~ .username {
+        display: block;
+        text-align: end;
+      }
+
       @media (max-width: 768px) {
         .container {
           width: 100%;
@@ -100,18 +118,87 @@
         }
       }
     </style>
+    <script type="module">
+      import { io } from "https://cdn.socket.io/4.5.4/socket.io.esm.min.js";
+      const getUserName = async () => {
+        let username = localStorage.getItem("username");
+        if (username) {
+          console.log("EL usuario ya existe ", username);
+        } else {
+          const peticion = await fetch("https://randomuser.me/api");
+          const data = await peticion.json();
+          username = data.results[0].name.first;
+          localStorage.setItem("username", username);
+        }
+
+        return username;
+      };
+      const socket = io({
+        auth: {
+          username: await getUserName(),
+          serverOffset: 0, // Esto sirve para que el servidor sepa que el cliente se está conectando desde el principio o desde deonde se ha quedado
+        },
+      }); //EEntre paréntesis se puede pasar la URL del servidor, por defecto busca donde esta
+
+      const form = document.getElementById("chat-form");
+      const input = document.getElementById("message");
+      const mensajes = document.getElementById("mensajes");
+
+      function mostrarMensaje(mensaje, tipo, usuario) {
+        const contenedorMensaje = document.createElement("div");
+        contenedorMensaje.classList.add("contenedorMensaje");
+        const username = document.createElement("span");
+        username.classList.add("username");
+        username.textContent = usuario;
+        const contenedor = document.createElement("div");
+        contenedor.classList.add(tipo);
+        const mensajeHTML = document.createElement("span");
+        mensajeHTML.textContent = mensaje;
+        contenedor.appendChild(mensajeHTML);
+        contenedorMensaje.appendChild(contenedor);
+        contenedorMensaje.appendChild(username);
+        mensajes.appendChild(contenedorMensaje);
+      }
+
+      socket.on("chat-message", (msg, serverOffset, username) => {
+        console.log("Mensaje recibido:", msg);
+        socket.auth.serverOffset = serverOffset; // Actualizamos el offset del servidor para que los siguientes mensajes que lleguen esten sincronizados
+
+        if (username === socket.auth.username) {
+          mostrarMensaje(msg, "mensajeEnviado", username);
+        } else {
+          mostrarMensaje(msg, "mensajeRecibido", username);
+        }
+      });
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        if (input.value) {
+          socket.emit("chat-message", input.value); //le pasamos el mensaje al servidor, el primero es el evento que puede ser el que queramos para recibirlo alla y el segundo es el dato
+          mostrarMensaje(input.value, "mensajeEnviado", socket.auth.username);
+          input.value = "";
+        }
+      });
+    </script>
   </head>
   <body>
     <div class="container">
       <div class="chat-container">
-        <h1>Bienvenido a Jose Luis Chat</h1>
-        <div class="mensajes" id="mensajes">
-          <!-- Aquí se mostrarán los mensajes -->
-        </div>
-        <div class="chat">
-          <input type="text" id="message" placeholder="Escribe un mensaje..." />
-          <button id="send">Enviar</button>
-        </div>
+        <h1>Bienvenido al Chat</h1>
+        <form action="" id="chat-form">
+          <div class="mensajes" id="mensajes">
+            <!-- Aquí se mostrarán los mensajes -->
+          </div>
+          <div class="chat">
+            <input
+              type="text"
+              id="message"
+              placeholder="Escribe un mensaje..."
+            />
+            <button id="send">Enviar</button>
+          </div>
+        </form>
       </div>
     </div>
   </body>
