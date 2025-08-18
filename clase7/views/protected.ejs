@@ -1,0 +1,17 @@
+<html>
+  <body>
+    <h1>Bienvenido a mi página <%= name %></h1>
+    <p>Este contenido es privado y solo visible para usuarios autenticados.</p>
+  </body>
+</html>
+
+<!--Los JSON WEB TOKENS son un estandar para establecer una comunicacion entre dos partes de manera segura sin teener estado (osea sin sesion en el servidor o BD, porque se inlcuye en el propio token)
+
+Teiene 3 partes: 
+1. Header: Contiene información sobre el emisor y el receptor, como el algoritmo codificador, que los podemos cambiar.
+2. Payload: Contiene los datos que se quieren transmitir.
+3. Signature: Se utiliza para verificar que el emisor del token es quien dice ser y para asegurar que el mensaje no ha sido alterado, esot ya tiene
+sus codificaciones para el header y payload y ademas tiene algo que se llama "secreto" que es una palabra que ponemos en la varibales de entorno
+y se utiliza para firmar el token.
+
+

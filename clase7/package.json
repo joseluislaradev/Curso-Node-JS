@@ -1,0 +1,26 @@
+{
+  "name": "clase7",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "standard": "17.1.2"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^3.1.10",
+    "express": "5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "eslintConfig": {
+    "extends": "standard"
+  }
+}
