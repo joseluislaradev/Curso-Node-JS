@@ -14,8 +14,9 @@ async function listFiles(folder) {
   }
 
   const filesPromises = files.map(async (file) => {
-    // Los mapeos con async siempre retornan una promesa
-    //Los mapeos ocurren en paralelo, no en secuencia. En secuncia es el forEach.
+    // Los mapeos con async siempre retornan una promesa, las promesas son empaquetadas rapidisimo sin esperar a completar el codigo para luego resolverlas
+    //ESto solo ocurre si als operacioens son I/O (porque las delega al sietma operaytivo como leer archivos, peticiones http, consultas a BD, perifericos.), si son operaciones de CPU no ocurre, es secuencial (procesar imagenes, cifrar datos, calular numeros, etc.)
+    //Los mapeos normales ocurren en secuencia tanto como el forEach.
     const filePath = path.join(folder, file);
     let stats;
 

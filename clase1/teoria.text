@@ -1,0 +1,95 @@
+🔹 1. ¿Qué es el event loop?
+
+    Es el motor que organiza qué se ejecuta y cuándo en Node.js.
+
+    Node.js corre en un solo hilo (single-threaded), pero gracias al event loop puede manejar muchas tareas “al mismo tiempo” sin bloquearse.
+
+
+
+
+
+🔹 2. Tipos de trabajo que maneja
+
+    Síncrono → código que se ejecuta inmediatamente (ej: let x = 2+2).
+
+    Asíncrono (I/O) → operaciones delegadas al SO (leer archivo, peticiones HTTP).
+
+    CPU bound → cálculos pesados que sí se hacen en el hilo principal y pueden bloquear.
+
+
+
+
+
+🔹 3. Colas principales en el event loop
+
+    - Microtasks queue
+
+        Promesas (.then, await)
+
+        queueMicrotask
+
+        ✅ Siempre se ejecuta primero en cada ciclo.
+
+    - Timers queue
+
+        setTimeout, setInterval
+
+        Se ejecutan cuando su tiempo expira.
+
+    - I/O callbacks queue
+
+        Respuestas de disco, red, etc.
+
+    - Check queue
+
+        setImmediate
+
+
+
+
+
+
+🔹 4. Cómo se comporta cada estilo
+
+Callbacks / .then
+    → El código de abajo sigue corriendo, y el callback se encola en la cola de microtasks o I/O cuando termine.
+
+Async / Await
+    → Pausa solo la función actual hasta que la promesa se resuelva.
+    → El event loop sigue trabajando con otras tareas (timers, I/O, otras promesas).
+
+Funciones síncronas (readFileSync)
+    → Bloquean TODO el event loop, nada más puede ejecutarse.
+
+
+
+
+🔹 5. Ejemplo de prioridades
+
+Si un setTimeout y una promesa se resuelven al mismo tiempo:
+
+    Primero corre la promesa (microtask).
+
+    Después el timeout (timers queue).
+
+
+
+
+
+🔹 6. Resumen sencillo en tus palabras
+
+El event loop es como un organizador de filas.
+
+Cada tipo de tarea va a su cola.
+
+En cada vuelta del loop:
+
+    - Atiende las microtasks (promesas, await).
+
+    - Luego los timers.
+
+    - Luego el resto (I/O, setImmediate).
+
+await no bloquea todo, solo pausa su función., el event lopp sigue atnediendo eventos
+
+Si quieres bloquear de verdad, usas métodos síncronos (readFileSync), pero eso se desaconseja casi siempre en Node.js.

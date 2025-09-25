@@ -1,11 +1,15 @@
 const fs = require("node:fs");
 
-//Esto es sincrono, bloquea el hilo de ejecución
-// console.log("Leyendo el primer archivo...");
-// const text = fs.readFile("./file.txt", "utf-8"); // Devuelve buffer de memeoria, con utf-8 lo convierte a texto
-// console.log("Primer archivo: ", text);
+console.log(fs);
 
-// console.log("Hacer cosas mientras lee el archivo...");
+//Esto es sincrono, bloquea el hilo de ejecución
+console.log("Leyendo el primer archivo...");
+const text = fs.readFileSync("./file.txt", "utf-8"); // Devuelve buffer de memeoria, con utf-8 lo convierte a texto
+console.log("Primer archivo: ", text);
+
+console.log("Hacer cosas mientras lee el archivo...");
+
+console.log("-".repeat(20));
 
 //Esto es asincrono, no bloquea el hilo de ejecución
 console.log("Leyendo el segundo archivo...");

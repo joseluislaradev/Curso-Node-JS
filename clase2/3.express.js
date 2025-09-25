@@ -2,19 +2,19 @@
 const express = require("express");
 const app = express();
 
-// //El middleware es una funcion que sirve para interceptar las peticiones y respuestas, permitiendo modificar o procesar los datos antes de que lleguen al manejador final.
+// El middleware es una funcion que sirve para interceptar las peticiones y respuestas, permitiendo modificar o procesar los datos antes de que lleguen al manejador final.
 // app.use((req, res, next) => { //Sepone .use perouede poner un metodo especifico para que se ejecute solo para ese verbo http, o poner como primer argumento un path para que se ejecute solo para ese path
 //   if (req.method != "POST") return next(); //next() es una funcion que se debe llamar para que la peticion continue al siguiente middleware o manejador de ruta, si no se llama, la peticion se queda y no recibe respuesta ni sigue.
 //   if (req.headers["content-type"] != "application/json") return next(); //Si el content-type no es application/json, se salta este middleware
 
-//   //Extrayendo logica de un post en un middleware para no repetir codigo
+//   Extrayendo logica de un post en un middleware para no repetir codigo
 //   let body = "";
 //   req.on("data", (chunk) => {
 //     body += chunk.toString();
 //   });
 //   req.on("end", () => {
 //     const data = JSON.parse(body);
-//     //mutar la request y meter la info en el request.body
+//     mutar la request y meter la info en el request.body
 //     req.body = data;
 //     next();
 //   });
