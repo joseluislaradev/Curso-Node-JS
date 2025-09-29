@@ -6,7 +6,7 @@ const app = express();
 
 const puerto = process.env.PORT ?? 3000;
 
-app.set("view engine", "ejs");
+app.set("view engine", "ejs"); // Indicamos que usaremos ejs como motor de plantillas
 app.use(express.json());
 app.use(cookieParser()); //Hace que las cookies ahora se vayan pegada en las peticiones
 app.use((req, res, next) => {
@@ -40,9 +40,9 @@ app.post("/login", async (req, res) => {
       { expiresIn: "1h" }
     );
     res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      httpOnly: true, //para que la cookie solo pueda verse en el servidor,no con js
+      secure: process.env.NODE_ENV === "production", //solo se envie por https
+      sameSite: "Strict", //para que la cookie solo se envie a nuestro dominio
       maxAge: 3600000,
     }); //httpOnly es que la cookie solo puede verse en el servidor,no con js, secure es para que solo se envie por https (solo si estamos en produccion)
     return res.send(user);
